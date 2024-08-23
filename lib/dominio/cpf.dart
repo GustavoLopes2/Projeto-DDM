@@ -2,19 +2,32 @@ import 'dart:js_util';
 
 class CPF {
   late List<int> numerosCPF;
+
   CPF(String cpf) {
-    if (cpf.isEmpty) throw Exception('CPF não pode ser vazio');
+    eVazio(cpf);
     cpf = cpf.replaceAll('.', '');
     cpf = cpf.replaceAll('-', '');
 
-    numerosCPF = <int>[];
     List<String> temp = cpf.split('');
     numerosCPF = cpf.split('').map(int.parse).toList();
+    eOnzeNumeros();
+    eNumeroDiferente();
+  }
+
+  eVazio(String cpf) {
+    if (cpf.isEmpty) throw Exception('CPF não pode ser vazio');
   }
 
   bool eOnzeNumeros() {
     if (numerosCPF.length != 11) throw Exception('CPF deve possuir 11 números');
     return true;
+  }
+
+  bool eNumeroDiferente() {
+    for (int i = 0; i < 9; i++) {
+      if (numerosCPF[i] != numerosCPF[i + 1]) return true;
+    }
+    throw Exception('CPF não pode ter números iguais');
   }
 
   bool validaCPF() {
